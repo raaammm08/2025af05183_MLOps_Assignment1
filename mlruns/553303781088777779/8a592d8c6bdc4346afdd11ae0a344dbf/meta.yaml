@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/tushar/.gemini/antigravity/scratch/2025af05183_MLOps_Assignment1/mlruns/553303781088777779/8a592d8c6bdc4346afdd11ae0a344dbf/artifacts
+end_time: 1792437374322
+entry_point_name: ''
+experiment_id: '553303781088777779'
+lifecycle_stage: active
+run_id: 8a592d8c6bdc4346afdd11ae0a344dbf
+run_name: Logistic_Regression_Tuning_2025af05183
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1792437369374
+status: 3
+tags: []
+user_id: tushar

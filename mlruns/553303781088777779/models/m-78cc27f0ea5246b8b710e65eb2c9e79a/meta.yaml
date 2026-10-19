@@ -1,0 +1,10 @@
+artifact_location: file:///Users/tushar/.gemini/antigravity/scratch/2025af05183_MLOps_Assignment1/mlruns/553303781088777779/models/m-78cc27f0ea5246b8b710e65eb2c9e79a/artifacts
+creation_timestamp: 1792436625900
+experiment_id: '553303781088777779'
+last_updated_timestamp: 1792436628015
+model_id: m-78cc27f0ea5246b8b710e65eb2c9e79a
+model_type: null
+name: model_Logistic_Regression
+source_run_id: 812366b0fe86473b9f192abe9393167e
+status: 2
+status_message: null

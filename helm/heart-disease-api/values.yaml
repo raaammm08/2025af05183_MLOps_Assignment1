@@ -1,0 +1,48 @@
+replicaCount: 2
+
+image:
+  repository: heart-disease-api
+  pullPolicy: IfNotPresent
+  tag: "2025af05183"
+
+serviceAccount:
+  create: false
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8000"
+  prometheus.io/path: "/metrics"
+
+service:
+  type: LoadBalancer
+  port: 8000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  hosts:
+    - host: heart-disease.bits-pilani.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+env:
+  PORT: "8000"
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "INFO"

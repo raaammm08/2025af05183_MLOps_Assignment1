@@ -1,0 +1,142 @@
+{
+    "Logistic_Regression": {
+        "best_params": {
+            "C": 5.0,
+            "penalty": "l2",
+            "solver": "lbfgs"
+        },
+        "metrics": {
+            "cv_roc_auc_mean": 0.9029188203101247,
+            "cv_roc_auc_std": 0.013537410700298942,
+            "cv_accuracy_mean": 0.8511904761904763,
+            "test_accuracy": 0.8688524590163934,
+            "test_precision": 0.8333333333333334,
+            "test_recall": 0.8928571428571429,
+            "test_f1_score": 0.8620689655172413,
+            "test_roc_auc": 0.9632034632034633
+        },
+        "classification_report": {
+            "0": {
+                "precision": 0.9032258064516129,
+                "recall": 0.8484848484848485,
+                "f1-score": 0.875,
+                "support": 33.0
+            },
+            "1": {
+                "precision": 0.8333333333333334,
+                "recall": 0.8928571428571429,
+                "f1-score": 0.8620689655172413,
+                "support": 28.0
+            },
+            "accuracy": 0.8688524590163934,
+            "macro avg": {
+                "precision": 0.8682795698924731,
+                "recall": 0.8706709956709957,
+                "f1-score": 0.8685344827586207,
+                "support": 61.0
+            },
+            "weighted avg": {
+                "precision": 0.8711440155120748,
+                "recall": 0.8688524590163934,
+                "f1-score": 0.8690644431882419,
+                "support": 61.0
+            }
+        }
+    },
+    "Random_Forest": {
+        "best_params": {
+            "criterion": "gini",
+            "max_depth": 3,
+            "min_samples_split": 2,
+            "n_estimators": 50
+        },
+        "metrics": {
+            "cv_roc_auc_mean": 0.9019622084839478,
+            "cv_roc_auc_std": 0.027315716138353745,
+            "cv_accuracy_mean": 0.8221088435374149,
+            "test_accuracy": 0.8688524590163934,
+            "test_precision": 0.8571428571428571,
+            "test_recall": 0.8571428571428571,
+            "test_f1_score": 0.8571428571428571,
+            "test_roc_auc": 0.9383116883116883
+        },
+        "classification_report": {
+            "0": {
+                "precision": 0.8787878787878788,
+                "recall": 0.8787878787878788,
+                "f1-score": 0.8787878787878788,
+                "support": 33.0
+            },
+            "1": {
+                "precision": 0.8571428571428571,
+                "recall": 0.8571428571428571,
+                "f1-score": 0.8571428571428571,
+                "support": 28.0
+            },
+            "accuracy": 0.8688524590163934,
+            "macro avg": {
+                "precision": 0.8679653679653679,
+                "recall": 0.8679653679653679,
+                "f1-score": 0.8679653679653679,
+                "support": 61.0
+            },
+            "weighted avg": {
+                "precision": 0.8688524590163934,
+                "recall": 0.8688524590163934,
+                "f1-score": 0.8688524590163934,
+                "support": 61.0
+            }
+        }
+    },
+    "Gradient_Boosting": {
+        "best_params": {
+            "learning_rate": 0.05,
+            "max_depth": 3,
+            "n_estimators": 50
+        },
+        "metrics": {
+            "cv_roc_auc_mean": 0.8773273425447338,
+            "cv_roc_auc_std": 0.02928962232369464,
+            "cv_accuracy_mean": 0.801530612244898,
+            "test_accuracy": 0.8852459016393442,
+            "test_precision": 0.8387096774193549,
+            "test_recall": 0.9285714285714286,
+            "test_f1_score": 0.8813559322033898,
+            "test_roc_auc": 0.9469696969696969
+        },
+        "classification_report": {
+            "0": {
+                "precision": 0.9333333333333333,
+                "recall": 0.8484848484848485,
+                "f1-score": 0.8888888888888888,
+                "support": 33.0
+            },
+            "1": {
+                "precision": 0.8387096774193549,
+                "recall": 0.9285714285714286,
+                "f1-score": 0.8813559322033898,
+                "support": 28.0
+            },
+            "accuracy": 0.8852459016393442,
+            "macro avg": {
+                "precision": 0.886021505376344,
+                "recall": 0.8885281385281385,
+                "f1-score": 0.8851224105461393,
+                "support": 61.0
+            },
+            "weighted avg": {
+                "precision": 0.8898995240613432,
+                "recall": 0.8852459016393442,
+                "f1-score": 0.8854311382791517,
+                "support": 61.0
+            }
+        }
+    },
+    "champion_model": "Logistic_Regression",
+    "author": {
+        "name": "Ram Narayan",
+        "roll_number": "2025af05183",
+        "email": "2025af05183@wilp.bits-pilani.ac.in",
+        "course": "AIMLCZG523 Machine Learning Operations"
+    }
+}

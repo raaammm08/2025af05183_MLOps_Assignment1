@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/tushar/.gemini/antigravity/scratch/2025af05183_MLOps_Assignment1/mlruns/553303781088777779/9f2077967c1d4bb98b6c99bcea3fcf4e/artifacts
+end_time: 1792436639980
+entry_point_name: ''
+experiment_id: '553303781088777779'
+lifecycle_stage: active
+run_id: 9f2077967c1d4bb98b6c99bcea3fcf4e
+run_name: Gradient_Boosting_Tuning_2025af05183
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1792436636786
+status: 3
+tags: []
+user_id: tushar

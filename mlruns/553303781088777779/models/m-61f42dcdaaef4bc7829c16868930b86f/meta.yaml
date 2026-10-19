@@ -1,0 +1,10 @@
+artifact_location: file:///Users/tushar/.gemini/antigravity/scratch/2025af05183_MLOps_Assignment1/mlruns/553303781088777779/models/m-61f42dcdaaef4bc7829c16868930b86f/artifacts
+creation_timestamp: 1792436634897
+experiment_id: '553303781088777779'
+last_updated_timestamp: 1792436636782
+model_id: m-61f42dcdaaef4bc7829c16868930b86f
+model_type: null
+name: model_Random_Forest
+source_run_id: 7b5dc7fbaf92481d9605111d887c39b5
+status: 2
+status_message: null

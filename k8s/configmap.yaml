@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: heart-disease-config
+  namespace: mlops-heart-disease
+data:
+  PORT: "8000"
+  LOG_LEVEL: "INFO"
+  ENVIRONMENT: "production"
+  STUDENT_ROLL: "2025af05183"
+  STUDENT_NAME: "Ram Narayan"

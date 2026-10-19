@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/tushar/.gemini/antigravity/scratch/2025af05183_MLOps_Assignment1/mlruns/553303781088777779/5499f16407ad4e8a88264a3b189a1283/artifacts
+end_time: 1792437384524
+entry_point_name: ''
+experiment_id: '553303781088777779'
+lifecycle_stage: active
+run_id: 5499f16407ad4e8a88264a3b189a1283
+run_name: Random_Forest_Tuning_2025af05183
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1792437374323
+status: 3
+tags: []
+user_id: tushar

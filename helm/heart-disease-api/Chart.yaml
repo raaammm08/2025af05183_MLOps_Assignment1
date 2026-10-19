@@ -1,0 +1,9 @@
+apiVersion: v2
+name: heart-disease-api
+description: Production Helm Chart for Heart Disease Risk Prediction MLOps API
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Ram Narayan
+    email: 2025af05183@wilp.bits-pilani.ac.in

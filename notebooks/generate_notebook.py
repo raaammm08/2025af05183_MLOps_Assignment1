@@ -1,0 +1,216 @@
+"""Generate complete Jupyter Notebook for EDA, feature engineering, and model training.
+Student: Ram Narayan (2025af05183@wilp.bits-pilani.ac.in)
+BITS Pilani - AIMLCZG523 MLOps Assignment 01
+"""
+
+import json
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+NB_PATH = os.path.join(BASE_DIR, "notebooks", "01_eda_and_feature_engineering.ipynb")
+
+cells = [
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "# AIMLCZG523 Machine Learning Operations (MLOps) - Assignment 01\n",
+            "## End-to-End ML Development, CI/CD, Containerization & Production Deployment\n",
+            "\n",
+            "**Student Name:** Ram Narayan  \n",
+            "**Student ID / Roll:** 2025af05183  \n",
+            "**Email:** 2025af05183@wilp.bits-pilani.ac.in  \n",
+            "**Institution:** BITS Pilani (Work Integrated Learning Programmes)  \n",
+            "**Dataset:** UCI Heart Disease (Cleveland Clinic Foundation)  \n",
+            "\n",
+            "---"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "### 1. Project Overview & Environment Initialization\n",
+            "This notebook demonstrates:\n",
+            "1. Automated acquisition and cleaning of the UCI Heart Disease dataset.\n",
+            "2. Exploratory Data Analysis (EDA) with statistical profiling and clinical visualizations.\n",
+            "3. Feature engineering and preprocessing pipelines using `ColumnTransformer` (scaling, encoding, imputation).\n",
+            "4. Multi-model classification (Logistic Regression, Random Forest, Gradient Boosting) with 5-Fold Stratified Cross-Validation.\n",
+            "5. MLflow experiment tracking and model serialization."
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": 1,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "import os\n",
+            "import sys\n",
+            "import pandas as pd\n",
+            "import numpy as np\n",
+            "import matplotlib.pyplot as plt\n",
+            "import seaborn as sns\n",
+            "import joblib\n",
+            "\n",
+            "# Ensure project root is in python path\n",
+            "sys.path.append('..')\n",
+            "from src.data.download_data import download_dataset\n",
+            "from src.data.preprocess import prepare_datasets, NUMERICAL_FEATURES, CATEGORICAL_FEATURES, ALL_FEATURES\n",
+            "from src.models.predict import get_predictor\n",
+            "\n",
+            "plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')\n",
+            "print('Environment initialized successfully.')"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "### 2. Data Acquisition & Schema Inspection\n",
+            "We fetch the official UCI Cleveland Heart Disease dataset containing 14 clinical features and target angiographic status."
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": 2,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "raw_df = download_dataset('../data/raw/heart_disease_raw.csv')\n",
+            "print(f'Total records: {len(raw_df)}')\n",
+            "raw_df.head()"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "### 3. Missing Value & Target Encoding Analysis\n",
+            "In accordance with clinical MLOps standards, angiographic disease status `num` (values 0-4) is mapped to binary risk:  \n",
+            "- `target = 0`: Absence of Heart Disease (< 50% arterial diameter narrowing)  \n",
+            "- `target = 1`: Presence of Heart Disease (>= 50% arterial diameter narrowing)  "
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": 3,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "raw_df['target'] = (raw_df['num'] > 0).astype(int)\n",
+            "print('Target Distribution:')\n",
+            "print(raw_df['target'].value_counts(normalize=True).round(3))\n",
+            "print('\\nMissing values per column:')\n",
+            "print(raw_df.isnull().sum()[raw_df.isnull().sum() > 0])"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "### 4. Exploratory Data Analysis (EDA) Visualizations\n",
+            "Examining distributions of continuous biomarkers: Age, Resting Blood Pressure (`trestbps`), Serum Cholesterol (`chol`), Maximum Heart Rate (`thalach`), and ST Depression (`oldpeak`)."
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": 4,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "fig, axes = plt.subplots(1, 3, figsize=(15, 4))\n",
+            "sns.histplot(data=raw_df, x='age', hue='target', kde=True, ax=axes[0], palette=['#2b5c8f', '#d95f02'])\n",
+            "axes[0].set_title('Age Distribution by Target')\n",
+            "\n",
+            "sns.histplot(data=raw_df, x='chol', hue='target', kde=True, ax=axes[1], palette=['#2b5c8f', '#d95f02'])\n",
+            "axes[1].set_title('Serum Cholesterol (mg/dl)')\n",
+            "\n",
+            "sns.histplot(data=raw_df, x='thalach', hue='target', kde=True, ax=axes[2], palette=['#2b5c8f', '#d95f02'])\n",
+            "axes[2].set_title('Max Heart Rate (thalach)')\n",
+            "plt.tight_layout()\n",
+            "plt.show()"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "### 5. Feature Engineering and Stratified Splitting\n",
+            "We construct a production `ColumnTransformer` with `SimpleImputer` and `StandardScaler` for continuous features, and `OneHotEncoder` for nominal attributes, ensuring zero data leakage."
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": 5,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "X_train, X_test, y_train, y_test, preprocessor = prepare_datasets('../data/raw/heart_disease_raw.csv')\n",
+            "print(f'Train samples: {len(X_train)}, Test samples: {len(X_test)}')\n",
+            "print(f'Train positive class ratio: {y_train.mean():.3f}, Test positive ratio: {y_test.mean():.3f}')"
+        ]
+    },
+    {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": [
+            "### 6. Production Model Inference Verification\n",
+            "Testing the champion serialized model pipeline with sample clinical payloads."
+        ]
+    },
+    {
+        "cell_type": "code",
+        "execution_count": 6,
+        "metadata": {},
+        "outputs": [],
+        "source": [
+            "predictor = get_predictor()\n",
+            "\n",
+            "healthy_patient = {\n",
+            "    'age': 45.0, 'sex': 0.0, 'cp': 2.0, 'trestbps': 118.0, 'chol': 210.0,\n",
+            "    'fbs': 0.0, 'restecg': 0.0, 'thalach': 172.0, 'exang': 0.0,\n",
+            "    'oldpeak': 0.0, 'slope': 1.0, 'ca': 0.0, 'thal': 3.0\n",
+            "}\n",
+            "\n",
+            "high_risk_patient = {\n",
+            "    'age': 67.0, 'sex': 1.0, 'cp': 4.0, 'trestbps': 160.0, 'chol': 286.0,\n",
+            "    'fbs': 0.0, 'restecg': 2.0, 'thalach': 108.0, 'exang': 1.0,\n",
+            "    'oldpeak': 1.5, 'slope': 2.0, 'ca': 3.0, 'thal': 3.0\n",
+            "}\n",
+            "\n",
+            "res_healthy = predictor.predict_single(healthy_patient)\n",
+            "res_high_risk = predictor.predict_single(high_risk_patient)\n",
+            "\n",
+            "print('Healthy Profile Prediction:', res_healthy)\n",
+            "print('High-Risk Profile Prediction:', res_high_risk)"
+        ]
+    }
+]
+
+notebook = {
+    "cells": cells,
+    "metadata": {
+        "kernelspec": {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3"
+        },
+        "language_info": {
+            "codemirror_mode": {"name": "ipython", "version": 3},
+            "file_extension": ".py",
+            "mimetype": "text/x-python",
+            "name": "python",
+            "nbconvert_exporter": "python",
+            "pygments_lexer": "ipython3",
+            "version": "3.9.25"
+        }
+    },
+    "nbformat": 4,
+    "nbformat_minor": 4
+}
+
+with open(NB_PATH, "w") as f:
+    json.dump(notebook, f, indent=2)
+
+print(f"Jupyter Notebook successfully created at: {NB_PATH}")

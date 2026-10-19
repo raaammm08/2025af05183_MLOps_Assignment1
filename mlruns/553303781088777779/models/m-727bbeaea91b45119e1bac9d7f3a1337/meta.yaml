@@ -1,0 +1,10 @@
+artifact_location: file:///Users/tushar/.gemini/antigravity/scratch/2025af05183_MLOps_Assignment1/mlruns/553303781088777779/models/m-727bbeaea91b45119e1bac9d7f3a1337/artifacts
+creation_timestamp: 1792437386553
+experiment_id: '553303781088777779'
+last_updated_timestamp: 1792437388931
+model_id: m-727bbeaea91b45119e1bac9d7f3a1337
+model_type: null
+name: model_Gradient_Boosting
+source_run_id: d40e23a910684adfaad8cc6e835c6ef9
+status: 2
+status_message: null

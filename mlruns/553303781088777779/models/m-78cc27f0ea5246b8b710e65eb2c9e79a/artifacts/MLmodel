@@ -1,0 +1,22 @@
+artifact_path: file:///Users/tushar/.gemini/antigravity/scratch/2025af05183_MLOps_Assignment1/mlruns/553303781088777779/models/m-78cc27f0ea5246b8b710e65eb2c9e79a/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.9.25
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.6.1
+mlflow_version: 3.1.4
+model_id: m-78cc27f0ea5246b8b710e65eb2c9e79a
+model_size_bytes: 3949
+model_uuid: m-78cc27f0ea5246b8b710e65eb2c9e79a
+prompts: null
+run_id: 812366b0fe86473b9f192abe9393167e
+utc_time_created: '2026-10-19 19:03:45.912770'

@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  heart-disease-api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: heart-disease-api-2025af05183
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - mlops-network
+
+  prometheus:
+    image: prom/prometheus:v2.49.1
+    container_name: prometheus-mlops
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.enable-lifecycle"
+    restart: unless-stopped
+    depends_on:
+      - heart-disease-api
+    networks:
+      - mlops-network
+
+  grafana:
+    image: grafana/grafana:10.3.3
+    container_name: grafana-mlops
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    networks:
+      - mlops-network
+
+networks:
+  mlops-network:
+    driver: bridge
+
+volumes:
+  grafana-storage:
